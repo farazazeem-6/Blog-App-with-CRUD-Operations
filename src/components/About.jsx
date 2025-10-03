@@ -1,9 +1,12 @@
-import React from 'react'
+import { Box, Container } from "@mui/material";
+import React from "react";
 
 function About() {
   return (
-    <div>About</div>
-  )
+    <Box>
+      <Container></Container>
+    </Box>
+  );
 }
 
-export default About
+export default About;

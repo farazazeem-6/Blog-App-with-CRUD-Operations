@@ -73,7 +73,7 @@ function Header() {
         }}
       >
         <NavButton onClick={() => navigate("/")}>Home</NavButton>
-        <NavButton onClick={() => navigate("/about")}>About</NavButton>
+        <NavButton >About</NavButton>
         <NavButton>Pages</NavButton>
         <NavButton>Blog</NavButton>
         <NavButton>Contact</NavButton>

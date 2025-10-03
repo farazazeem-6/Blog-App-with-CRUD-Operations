@@ -15,7 +15,6 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Hero />} />
-          <Route path="/about" element={<About />} />
           <Route path="/post/:id" element={<PostDetail />} />
           <Route path="/addPost" element={<AddPost />} />
         </Route>

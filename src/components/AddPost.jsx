@@ -5,9 +5,41 @@ import {
   TextField,
   TextareaAutosize,
 } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function AddPost() {
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const navigate = useNavigate();
+
+  async function addPost() {
+    try {
+      const response = await fetch("http://localhost:3000/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imgSrc:
+            "https://images.unsplash.com/photo-1578321270951-88bd84d09a64?q=80&w=807&auto=format&fit=crop",
+          title: title,
+          text: text,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      //   console.log("Post updated:", data);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to update post:", error.message);
+    }
+  }
+
   return (
     <Box
       sx={{ backgroundColor: "#ebebeb", minHeight: "83vh", padding: "30px" }}
@@ -35,30 +67,33 @@ function AddPost() {
           alt=""
         />
         <TextField
+          onChange={(e) => setTitle(e.target.value)}
           fullWidth
           label="Title"
           id="fullWidth"
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "black", 
+                borderColor: "black",
               },
               "&:hover fieldset": {
-                borderColor: "black", 
+                borderColor: "black",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "black", 
+                borderColor: "black",
               },
             },
           }}
         />
         <TextareaAutosize
+          onChange={(e) => setText(e.target.value)}
           aria-label="minimum height"
           minRows={10}
           placeholder="Enter Detail"
           id="fullWidth"
         />
         <Button
+          onClick={() => addPost()}
           variant="contained"
           style={{ backgroundColor: "black", textTransform: "none" }}
         >

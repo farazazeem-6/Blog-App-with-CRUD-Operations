@@ -9,7 +9,6 @@ import "react-multi-carousel/lib/styles.css";
 
 const responsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
     items: 5,
   },
@@ -191,10 +190,9 @@ function Hero() {
 
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
           gap: 2,
-          justifyContent: "space-between",
           backgroundColor: "#ebebeb",
           px: 2,
           py: 2,
@@ -205,8 +203,6 @@ function Hero() {
             onClick={() => navigate(`/post/${item.id}`)}
             key={index}
             sx={{
-              flex: "1 1 calc(33.33% - 16px)",
-              minWidth: "300px",
               border: "1px solid #ccc",
               boxShadow: " rgba(0, 0, 0, 0.24) 0px 3px 8px",
               p: 2,

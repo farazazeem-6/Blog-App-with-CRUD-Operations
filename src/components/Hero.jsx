@@ -1,4 +1,4 @@
-import { Avatar, Box, Container, IconButton, Typography } from "@mui/material";
+import { Box, Container, IconButton, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MessageIcon from "@mui/icons-material/Message";

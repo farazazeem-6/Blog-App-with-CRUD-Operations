@@ -1,5 +1,5 @@
 import { Box, Divider, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
 function PostDetail() {

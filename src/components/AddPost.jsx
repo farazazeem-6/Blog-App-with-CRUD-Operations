@@ -33,7 +33,6 @@ function AddPost() {
       }
 
       const data = await response.json();
-      //   console.log("Post updated:", data);
       navigate("/");
     } catch (error) {
       console.error("Failed to update post:", error.message);

@@ -1,16 +1,61 @@
-# React + Vite
+# Blog App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React blog website built with Vite, Material UI, and React Router. The app showcases a responsive hero section, post cards, a detailed post view, and a form to create new posts.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Responsive blog landing page
+- Featured post carousel
+- Post cards with cover images and summaries
+- Individual post detail route
+- Add new post form
+- Material UI-based styling
+- Client-side routing with React Router
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite
+- React Router DOM
+- Material UI
+- React Multi Carousel
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `src/App.jsx` – route setup for the application
+- `src/components/Hero.jsx` – homepage posts and featured carousel
+- `src/components/PostDetail.jsx` – individual post details
+- `src/components/AddPost.jsx` – form to create a new blog post
+- `src/Layout.jsx` – shared layout wrapper
+
+## Getting Started
+
+1. Install dependencies:
+
+   npm install
+
+2. Start the development server:
+
+   npm run dev
+
+3. Open the app in your browser at the local Vite URL printed in the terminal.
+
+## Running the Blog Data API
+
+This project fetches and posts blog content from a local API endpoint:
+
+- `http://localhost:3000/posts`
+
+Make sure your local JSON server or API is running on port `3000` before using the homepage and post creation features.
+
+## Build for Production
+
+npm run build
+
+## Preview Production Build
+
+npm run preview
+
+## Notes
+
+The project is currently structured as a frontend React practice app and depends on an external local API for blog data.

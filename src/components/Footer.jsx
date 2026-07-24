@@ -6,34 +6,37 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 function Footer() {
   return (
-    <Container>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography sx={{ fontSize: "14px" }} variant="body1">
-          Cartsy Medicine - All right reserved - Design and Developed By RedIQ
-          Inc
-        </Typography>
-        <Box>
-          <IconButton>
-            <FacebookIcon sx={{ fontSize: "16px", color: "black" }} />
-          </IconButton>
-          <IconButton>
-            <InstagramIcon sx={{ fontSize: "16px", color: "black" }} />
-          </IconButton>
-          <IconButton>
-            <TwitterIcon sx={{ fontSize: "16px", color: "black" }} />
-          </IconButton>
-          <IconButton>
-            <LinkedInIcon sx={{ fontSize: "16px", color: "black" }} />
-          </IconButton>
+    <Box component="footer" sx={{ py: 3, backgroundColor: "#fafafa" }}>
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 2,
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            GOSTO Blog - All rights reserved.
+          </Typography>
+          <Box>
+            <IconButton aria-label="Facebook">
+              <FacebookIcon sx={{ fontSize: 18, color: "black" }} />
+            </IconButton>
+            <IconButton aria-label="Instagram">
+              <InstagramIcon sx={{ fontSize: 18, color: "black" }} />
+            </IconButton>
+            <IconButton aria-label="Twitter">
+              <TwitterIcon sx={{ fontSize: 18, color: "black" }} />
+            </IconButton>
+            <IconButton aria-label="LinkedIn">
+              <LinkedInIcon sx={{ fontSize: 18, color: "black" }} />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 

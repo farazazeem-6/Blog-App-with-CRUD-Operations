@@ -1,11 +1,9 @@
-import { Box, Container, IconButton, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import MessageIcon from "@mui/icons-material/Message";
-import ShareIcon from "@mui/icons-material/Share";
-import { useNavigate } from "react-router";
+import { Box, CircularProgress, Container, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { getPosts } from "../api/postsApi";
+import PostCard from "./PostCard";
 
 const responsive = {
   superLargeDesktop: {
@@ -26,198 +24,123 @@ const responsive = {
   },
 };
 
+const heroSlides = [
+  {
+    title: "Travel",
+    description: "There's always light at the end of the tunnel.",
+    image:
+      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=974&auto=format&fit=crop",
+  },
+  {
+    title: "Sport",
+    description: "Stay calm and surf.",
+    image:
+      "https://images.unsplash.com/photo-1421789665209-c9b2a435e3dc?q=80&w=871&auto=format&fit=crop",
+  },
+  {
+    title: "Fun",
+    description: "Adventure awaits.",
+    image:
+      "https://images.unsplash.com/photo-1505820013142-f86a3439c5b2?q=80&w=871&auto=format&fit=crop",
+  },
+  {
+    title: "Business",
+    description: "Become a Dragonfly.",
+    image:
+      "https://plus.unsplash.com/premium_photo-1673603988651-99f79e4ae7d3?q=80&w=870&auto=format&fit=crop",
+  },
+  {
+    title: "Technology",
+    description: "There is always more to learn.",
+    image:
+      "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?q=80&w=871&auto=format&fit=crop",
+  },
+  {
+    title: "Health",
+    description: "Wellness for every day.",
+    image:
+      "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=874&auto=format&fit=crop",
+  },
+];
+
 function Hero() {
-  const [post, setPost] = useState([]);
-  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchPost() {
-      let response = await fetch("http://localhost:3000/posts");
-      let data = await response.json();
-      //   console.log(data);
-      setPost(data);
+    async function loadPosts() {
+      try {
+        const data = await getPosts();
+        setPosts(data);
+      } catch (fetchError) {
+        setError(fetchError.message || "Unable to load posts.");
+      } finally {
+        setLoading(false);
+      }
     }
-    fetchPost();
-  }, [setPost]);
+
+    loadPosts();
+  }, []);
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{ display: "flex", flexDirection: "column" }}
-    >
-      <Box>
-        <Carousel responsive={responsive}>
-          <Box
-            sx={{
-              backgroundImage:
-                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-              height: "200px",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "yellow", fontWeight: 600 }}
-              variant="body1"
+    <Container maxWidth={false} sx={{ display: "flex", flexDirection: "column" }}>
+      <Box sx={{ py: 3 }}>
+        <Carousel responsive={responsive} autoPlay autoPlaySpeed={4500} infinite>
+          {heroSlides.map((slide) => (
+            <Box
+              key={slide.title}
+              sx={{
+                backgroundImage: `url(${slide.image})`,
+                height: 200,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              Travel
-            </Typography>
-            <Typography sx={{ color: "white" }} variant="body1">
-              There's always light at the end of tunnel.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              backgroundImage:
-                'url("https://images.unsplash.com/photo-1421789665209-c9b2a435e3dc?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-              height: "200px",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "yellow", fontWeight: 600 }}
-              variant="body1"
-            >
-              Sport
-            </Typography>
-            <Typography sx={{ color: "white" }} variant="body1">
-              Stay calm and surf.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              backgroundImage:
-                'url("https://images.unsplash.com/photo-1505820013142-f86a3439c5b2?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-              height: "200px",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "yellow", fontWeight: 600 }}
-              variant="body1"
-            >
-              Fun
-            </Typography>
-            <Typography sx={{ color: "white" }} variant="body1">
-              There's always light at the end of tunnel.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              backgroundImage:
-                'url("https://plus.unsplash.com/premium_photo-1673603988651-99f79e4ae7d3?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-              height: "200px",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "yellow", fontWeight: 600 }}
-              variant="body1"
-            >
-              Business
-            </Typography>
-            <Typography sx={{ color: "white" }} variant="body1">
-              Become a Dragonfly
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              backgroundImage:
-                'url("https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-              height: "200px",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "yellow", fontWeight: 600 }}
-              variant="body1"
-            >
-              Technology
-            </Typography>
-            <Typography sx={{ color: "white" }} variant="body1">
-              There's always light at the end of tunnel.
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              backgroundImage:
-                'url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-              height: "200px",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "yellow", fontWeight: 600 }}
-              variant="body1"
-            >
-              Health
-            </Typography>
-            <Typography sx={{ color: "white" }} variant="body1">
-              Become a Dragonfly
-            </Typography>
-          </Box>
+              <Typography sx={{ color: "yellow", fontWeight: 600 }} variant="body1">
+                {slide.title}
+              </Typography>
+              <Typography sx={{ color: "white" }} variant="body1">
+                {slide.description}
+              </Typography>
+            </Box>
+          ))}
         </Carousel>
       </Box>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
-          gap: 2,
-          backgroundColor: "#ebebeb",
-          px: 2,
-          py: 2,
-        }}
-      >
-        {post.map((item, index) => (
+      <Box sx={{ px: 2, py: 2, backgroundColor: "#ebebeb" }}>
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", py: 10 }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Typography color="error" align="center">
+            {error}
+          </Typography>
+        ) : (
           <Box
-            onClick={() => navigate(`/post/${item.id}`)}
-            key={index}
             sx={{
-              border: "1px solid #ccc",
-              boxShadow: " rgba(0, 0, 0, 0.24) 0px 3px 8px",
-              p: 2,
-              borderRadius: "6px",
-              backgroundColor: "white",
-              display: "flex",
-              flexDirection: "column",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
               gap: 2,
-              cursor: "pointer",
             }}
           >
-            <img
-              style={{ height: "200px", objectFit: "cover" }}
-              src={item.imgSrc}
-            />
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </Box>
+        )}
+      </Box>
+    </Container>
+  );
+}
+
+export default Hero;
+
             <Typography variant="h6">{item.title}</Typography>
             <Typography
               sx={{

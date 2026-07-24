@@ -1,102 +1,88 @@
-import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  TextareaAutosize,
-} from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Box, Button, Container, TextField, Typography, Alert } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createPost } from "../api/postsApi";
 
 function AddPost() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
-  async function addPost() {
-    try {
-      const response = await fetch("http://localhost:3000/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          imgSrc:
-            "https://images.unsplash.com/photo-1578321270951-88bd84d09a64?q=80&w=807&auto=format&fit=crop",
-          title: title,
-          text: text,
-        }),
-      });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      navigate("/");
-    } catch (error) {
-      console.error("Failed to update post:", error.message);
+    if (!title.trim() || !text.trim()) {
+      setError("Please add both a title and post content.");
+      return;
     }
-  }
+
+    setSaving(true);
+    setError(null);
+
+    try {
+      await createPost({
+        title: title.trim(),
+        text: text.trim(),
+        imgSrc:
+          "https://images.unsplash.com/photo-1578321270951-88bd84d09a64?q=80&w=807&auto=format&fit=crop",
+        date: new Date().toLocaleDateString(),
+        category: "Lifestyle",
+      });
+      navigate("/");
+    } catch (submitError) {
+      setError(submitError.message || "Could not create the post.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
-    <Box
-      sx={{ backgroundColor: "#ebebeb", minHeight: "83vh", padding: "30px" }}
-    >
+    <Box sx={{ backgroundColor: "#ebebeb", minHeight: "83vh", py: 6 }}>
       <Container
-        style={{
+        maxWidth="sm"
+        sx={{
           backgroundColor: "white",
-          borderRadius: "6px",
-          boxShadow: " rgba(0, 0, 0, 0.1) 0px 4px 12px",
+          borderRadius: 3,
+          boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
           display: "flex",
           flexDirection: "column",
-          padding: "10px 20px",
-          gap: "20px",
+          gap: 3,
+          p: 4,
         }}
-        maxWidth={"sm"}
       >
-        <img
-          style={{
-            borderRadius: "4px",
-            height: "150px",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-          src="https://images.unsplash.com/photo-1578320339840-73f0a565894c?q=80&w=1336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-        />
+        <Typography variant="h5" fontWeight={700}>
+          Create a new post
+        </Typography>
+
+        {error && <Alert severity="error">{error}</Alert>}
+
         <TextField
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
-          label="Title"
-          id="fullWidth"
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "black",
-              },
-              "&:hover fieldset": {
-                borderColor: "black",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "black",
-              },
-            },
-          }}
+          label="Post title"
+          placeholder="Add a title for your post"
         />
-        <TextareaAutosize
+
+        <TextField
+          value={text}
           onChange={(e) => setText(e.target.value)}
-          aria-label="minimum height"
-          minRows={10}
-          placeholder="Enter Detail"
-          id="fullWidth"
+          fullWidth
+          label="Post content"
+          minRows={8}
+          multiline
+          placeholder="Write your post content here"
         />
+
         <Button
-          onClick={() => addPost()}
+          onClick={handleSubmit}
           variant="contained"
-          style={{ backgroundColor: "black", textTransform: "none" }}
+          disabled={!title.trim() || !text.trim() || saving}
+          sx={{ backgroundColor: "black", textTransform: "none" }}
         >
-          Create Post
+          {saving ? "Saving..." : "Create Post"}
         </Button>
       </Container>
     </Box>
